@@ -1,85 +1,91 @@
-[![Linux NAPI](https://github.com/wavedrom/vcd/actions/workflows/linux-napi.yml/badge.svg)](https://github.com/wavedrom/vcd/actions/workflows/linux-napi.yml)[![Linux WASM](https://github.com/wavedrom/vcd/actions/workflows/linux-wasm.yml/badge.svg)](https://github.com/wavedrom/vcd/actions/workflows/linux-wasm.yml)[![MacOS NAPI](https://github.com/wavedrom/vcd/actions/workflows/macos-napi.yml/badge.svg)](https://github.com/wavedrom/vcd/actions/workflows/macos-napi.yml)[![MacOS WASM](https://github.com/wavedrom/vcd/actions/workflows/macos-wasm.yml/badge.svg)](https://github.com/wavedrom/vcd/actions/workflows/macos-wasm.yml)[![Windows WASM](https://github.com/wavedrom/vcd/actions/workflows/windows-wasm.yml/badge.svg)](https://github.com/wavedrom/vcd/actions/workflows/windows-wasm.yml)
-[![NPM version](https://img.shields.io/npm/v/vcd-stream.svg)](https://www.npmjs.org/package/vcd-stream)
+Value Change Dump ([VCD](https://en.wikipedia.org/wiki/Value_change_dump)) parser using [llparse](https://github.com/nodejs/llparse) based on [wavedrom](https://github.com/wavedrom/vcd).
 
-Value Change Dump ([VCD](https://en.wikipedia.org/wiki/Value_change_dump)) parser using [llparse](https://github.com/nodejs/llparse)
+## Prepare
+
+1. [Install emcc compiler](https://kirigaya.cn/blog/article?seq=55)
+
+2. clone https://github.com/Digital-EDA/digital-vcd-parser
+
+## Build
+
+```bash
+source $EMCC_HOME/emsdk_env.sh
+# once only
+npm install browserify terser -g
+# once only
+node bin/build.js
+# build
+make -j 12
+# adjust to browser environment
+browserify ./bin/vcd.js | terser --compress -o ./out/vcd.js
+```
+
+production are :
+
+- `./out/vcd.js`
+- `./out/vcd.wasm`
+
+move them to your development worksapce.
 
 ## Usage
 
-Install
+Only stream of Uint8 is supported as input. e.g. we want to parse a certain `*.vcd` read in browser-like environment. Mount vcd to window in your `index.html`:
 
-```
-npm i vcd-stream
-make wasm
-```
+```html
+<!DOCTYPE html>
+<html lang="">
 
-Require
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <link rel="stylesheet" href="./vcd.css">
+    <title>
+        <%= htmlWebpackPlugin.options.title %>
+    </title>
+    <script src="./vcd.js"></script>
+</head>
 
-```js
-let vcd = require('vcd-stream');
-```
+<body>
+    <noscript>
+        <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
+                Please enable it to continue.</strong>
+    </noscript>
+    <div id="app"></div>
+</body>
 
-Create parser writable stream instance
-
-```js
-let inst = vcd.parser();
-```
-
-General event emitter
-
-```js
-inst.on(<eventName>, () => {});
-```
-
-Events:
-* `$enddefinitions` - when all modules/wires are defined
-* `finish` - end of stream
-* `error` - error during parsing process
-
-Change event emitter
-
-```js
-inst.change.on(<wireName>, (time, cmd) => {});
+</html>
 ```
 
-* `time` -- change time
-* `cmd` -- change type
+In your main workspace (`App.vue` for example), goes like this:
 
-Info object
+```javascript
+const uint8array = await readVcdFile();
+const vcdstream = await getVcdStream();
 
-```js
-let info = inst.info;
-```
+// level size diagram data
+const values = {};
 
-* `info.status` - (`'declaration'`|`'simulation'`)
-* `info.wires` - hierarchy object of modules and wires
+vcdstream.change.any((id, time, cmd, value, mask) => {
+    if (values[id] === undefined) {
+        values[id] = [];
+    }
+    values[id].push({time, cmd, value, mask});
+})
 
-Pipe data into the instance
+const maxChunkLength = 1 << 17;
+for (let i = 0; i < uint8array.length; i += maxChunkLength) {
+    const piece = uint8array.slice(i, i + maxChunkLength);
+    vcdstream.write(piece);
+}
 
-```js
-myStream.pipe(inst);
-```
-
-## Test
-
-### Build / Test Napi version
-
-```
-npm i
-npm run mocha_napi
-```
-
-### Build / Test Wasm version
+// structure info of wires in vcdstream.info
+console.log(vcdstream.info);
 
 ```
-make
-npm run mocha_wasm
-```
 
-### Test all
-
-```
-npm test
-```
+---
 
 ## License
 

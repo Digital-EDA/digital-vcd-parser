@@ -164,7 +164,7 @@ int scopeIdentifierSpan(vcd_parser_t* state, const unsigned char* p, const unsig
   ASSERT(top, napi_set_element(env, stack, state->stackPointer, obj))
 #else
   // set stack[sp].`tmpStr` to {}
-  snprintf(state->tmpStr2, 4096, "stack.%d.%s", state->stackPointer, state->tmpStr);
+  snprintf(state->tmpStr2, 4096, "stack.%d.%s", state->stackPointer, (char *)state->tmpStr);
   new_object_path(state->tmpStr2);
 
   // bump
@@ -216,7 +216,7 @@ int varNameSpan(vcd_parser_t* state, const unsigned char* p, const unsigned char
   strcopy(p, endp, state->tmpStr);
   // set
   //  info.stack[sp].`tmpStr` = info.varId
-  snprintf(state->tmpStr2, 4096, "stack.%d.%s", state->stackPointer, state->tmpStr);
+  snprintf(state->tmpStr2, 4096, "stack.%d.%s", state->stackPointer, (char *)state->tmpStr);
   set_path_to_path(state->tmpStr2, "varType,varSize,varId");
 #endif
   return 0;
@@ -232,7 +232,7 @@ int onId (vcd_parser_t* state, const unsigned char* _p, const unsigned char* _en
 #ifndef VCDWASM
   napi_env env = state->napi_env;
 #endif
-  const unsigned char* p = (char *)state->idStr;
+  const unsigned char* p = (unsigned char *)state->idStr;
   const unsigned int plen = strlen((char *)p) - 1;
   *(char *)(p + plen) = 0; // null instead of space
   const unsigned char* endp = p + plen - 1;

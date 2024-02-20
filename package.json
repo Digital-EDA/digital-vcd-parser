@@ -42,7 +42,8 @@
   "dependencies": {
     "bindings": "^1.5.0",
     "dot-prop": "^6.0.1",
-    "llparse": "^7.1.1"
+    "llparse": "^7.1.1",
+    "vcd-stream": "^1.5.0"
   },
   "devDependencies": {
     "@drom/eslint-config": "^0.12.0",

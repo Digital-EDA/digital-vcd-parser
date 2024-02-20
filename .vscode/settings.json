@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.rmd": "markdown",
+        "node_api.h": "c",
+        "typeinfo": "c"
+    }
+}

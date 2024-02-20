@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable no-console */
 'use strict';
 
 const fs = require('fs');
@@ -108,7 +109,7 @@ const generate = (cb) => {
   // scopeIdentifier scopeIdentifierEnd
 
   const enddefinitions = p.node('inDeclarationEnd');
-
+  
   const cmd = objection({
     $comment: 1,
     $date: 2,
