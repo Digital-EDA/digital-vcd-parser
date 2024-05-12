@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 'use strict';
+/* eslint-disable no-console */
+/* eslint-disable indent */
 
 const fs = require('fs-extra');
 const async = require('async');

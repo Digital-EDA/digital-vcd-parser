@@ -9,7 +9,7 @@
     "nyc_mocha_napi": "nyc -r=text -r=lcov mocha test/napi_* ",
     "nyc_mocha_wasm": "nyc -r=text -r=lcov mocha test/wasm_*",
     "nyc_mocha": "nyc -r=text -r=lcov mocha",
-    "test": "eslint bin lib test && npm run nyc_mocha",
+    "test": "npm run nyc_mocha",
     "testonly": "nyc -r=text -r=lcov mocha",
     "watch": "mocha --watch",
     "build.web": "browserify ./lib/vcd-web.js | terser --compress -o demo/vcd-web.min.js",

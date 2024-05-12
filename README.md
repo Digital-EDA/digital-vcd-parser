@@ -11,13 +11,11 @@ Value Change Dump ([VCD](https://en.wikipedia.org/wiki/Value_change_dump)) parse
 ```bash
 source $EMCC_HOME/emsdk_env.sh
 # once only
-npm install browserify terser -g
+npm install browserify terser node-gyp -g
 # once only
-node bin/build.js
+npm i
 # build
 make -j 12
-# adjust to browser environment
-browserify ./bin/vcd.js | terser --compress -o ./out/vcd.js
 ```
 
 production are :
@@ -26,6 +24,25 @@ production are :
 - `./out/vcd.wasm`
 
 move them to your development worksapce.
+
+
+## Test
+
+After first building, run following
+
+```bash
+npm run test
+```
+
+note: don't run `browserify` if you want to test.
+
+## Deploy to web
+
+```bash
+source deploy.sh /path/to/digital-vcd-render
+```
+
+
 
 ## Usage
 
