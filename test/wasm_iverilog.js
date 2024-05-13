@@ -20,6 +20,7 @@ describe('wasm iverilog', () => {
         // task 2
         expect(info.vcdInfo.date.trim()).to.eq('Thu Jul 22 22:29:56 2021');
         expect(info.vcdInfo.version.trim()).to.eq('Icarus Verilog');
+        expect(info.vcdInfo.timescale).to.eq(-9);
 
         // task 3
         for (const key of Object.keys(answers)) {
@@ -33,7 +34,7 @@ describe('wasm iverilog', () => {
         const vcdstream = await makeVcdStream();
         const arraybuffer = fs.readFileSync('./test/samples/iverilog.large.vcd');
         // const answers = JSON.parse(fs.readFileSync('./test/samples/iverilog.large.json'));
-        
+        vcdstream.clean();
         vcdstream.consume(arraybuffer);
         const info = vcdstream.getBasicInfo();
         const values = info.signalValues;
@@ -43,12 +44,6 @@ describe('wasm iverilog', () => {
         expect(values['*']).to.not.be.undefined;
         expect(values['+']).to.not.be.undefined;
 
-        console.log(info.signalValues['*']);
-
-        // task 2
-        // expect(info.vcdInfo.date.trim()).to.eq('Sat Apr 20 20:06:14 2024');
-        // expect(info.vcdInfo.version.trim()).to.eq('Icarus Verilog');
-        // expect(info.vcdInfo.timescale.trim()).to.eq('1ns');
 
         // // task 2
         // for (const key of Object.keys(answers)) {
@@ -56,5 +51,15 @@ describe('wasm iverilog', () => {
         //     expect(values[key]).to.not.be.undefined;
         //     expect(values[key]).to.deep.eq(ans);
         // }
+
+        // console.log(info.signalValues['*']);
+
+        // task 3
+        expect(info.vcdInfo.date.trim()).to.eq('Sat Apr 20 20:06:14 2024');
+        expect(info.vcdInfo.version.trim()).to.eq('Icarus Verilog');
+        expect(info.vcdInfo.timescale).to.eq(-9);
+
+        // task 4
+
     });
 });

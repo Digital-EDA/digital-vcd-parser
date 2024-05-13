@@ -13,6 +13,7 @@ async function main() {
     vcdstream.consume(arraybuffer);
     const info = vcdstream.getBasicInfo();
     console.log(info.signalValues['*']);
+    console.log(info.signalValues['+']);
 }
 
 main();

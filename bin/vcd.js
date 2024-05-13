@@ -26,7 +26,7 @@ const webVcdParser = require('../lib/web-vcd-parser.js');
  * 
  * @typedef {Object} VcdInfo
  * @property {number} t0
- * @property {string} timescale
+ * @property {number} timescale
  * @property {string} version
  * @property {string} date
  * @property {string} status
@@ -103,6 +103,7 @@ function parseTimescale(timescale) {
  *  write: (piece: Uint8Array) => void
  *  consume: (arraybuffer: ArrayBuffer, config?: consumeConfig) => void
  *  getBasicInfo: () => VcdBasicInfo
+ *  clean: () => void
  * }}
  */
 async function makeVcdStream() {
@@ -119,12 +120,6 @@ async function makeVcdStream() {
         //     console.log(id, time, cmd, value, mask);
         //     console.log(time > MAX_SAFE_INTEGER);
         // }
-
-        // TODO: 解决这个问题，有关 parameter 参数读取
-        if (time > MAX_SAFE_INTEGER) {
-            vcdBasicInfo.signalValues[id].wave = [[0, Number(value)]];
-            return;
-        }
 
         if (cmd >= 14 && cmd <= 28) {
             vcdBasicInfo.signalValues[id].kind = 'bit';
@@ -146,6 +141,13 @@ async function makeVcdStream() {
     vcdstream.getBasicInfo = () => {
         return vcdBasicInfo;
     };
+
+    vcdstream.clean = () => {
+        vcdBasicInfo.signalValues = {};
+        vcdBasicInfo.vcdInfo = undefined;
+        vcdBasicInfo.tgcd = undefined;
+        vcdBasicInfo.time = undefined;
+    }
 
     return vcdstream;
 }
@@ -206,11 +208,9 @@ async function getVcdStream() {
 // 测试时关闭该函数
 // 部署时激活该函数
 try {
-    if (self) {
-        self.getVcdStream = getVcdStream;
-        self.makeVcdStream = makeVcdStream;
-        self.vcdBasicInfo = vcdBasicInfo;
-    }    
+    self.getVcdStream = getVcdStream;
+    self.makeVcdStream = makeVcdStream;
+    self.vcdBasicInfo = vcdBasicInfo; 
 } catch (error) {}
 
 module.exports = {
