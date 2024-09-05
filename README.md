@@ -1,22 +1,25 @@
-Value Change Dump ([VCD](https://en.wikipedia.org/wiki/Value_change_dump)) parser using [llparse](https://github.com/nodejs/llparse) based on [wavedrom](https://github.com/wavedrom/vcd).
+基于 [llparse](https://github.com/nodejs/llparse) 的 vcd 解析器，用于 [Digital IDE 的 wave 渲染器](https://github.com/Digital-EDA/digital-vcd-render) 的 vcd 后端解析器构建。
 
-## Prepare
+## 准备工作
 
-1. [Install emcc compiler](https://kirigaya.cn/blog/article?seq=55)
+[安装 emcc](https://kirigaya.cn/blog/article?seq=55)
 
-2. clone https://github.com/Digital-EDA/digital-vcd-parser
+```bash
+git clone https://github.com/Digital-EDA/digital-vcd-parser
+cd digital-vcd-parser
+npm i
+npm install browserify terser node-gyp -g
+```
+
 
 ## 构建
 
 ```bash
+# 激活 emcc
 source $EMCC_HOME/emsdk_env.sh
 
-# 只需要运行一次
-npm install browserify terser node-gyp -g
-# 只需要运行一次
-npm i
-
-# 构建左推解析器代码（每次修改 ./bin/build.js 都需要重新运行）
+# 生成 vcd_parser.c 和 vcd_parser.h（每次修改 ./bin/build.js 都需要重新运行）
+# llparse 使用教程：https://kirigaya.cn/blog/article?seq=223
 node bin/build.js
 
 # build
@@ -28,24 +31,30 @@ make -j 12
 - `./out/vcd.js`
 - `./out/vcd.wasm`
 
-部署代码：
+部署到 digital-vcd-render ：
 
 ```bash
 # 将生成的 wasm 通过 浏览器化和特殊处理后部署到 render 项目中
 source deploy.sh /mnt/c/Users/11934/Project/Digital-IDE/digital-vcd-render
 ```
 
-## Test
+## 测试
 
-After first building, run following
+快速测试：
 
+```bash
+node test/debug/basic.js
+```
+
+通用测试：
 ```bash
 npm run test
 ```
 
-note: don't run `browserify` if you want to test.
+> tip: 不要运行 `browserify` 如果你要进行测试的话
 
-## Deploy to web
+
+## 浏览器使用
 
 ```bash
 source deploy.sh /path/to/digital-vcd-render
@@ -108,7 +117,6 @@ for (let i = 0; i < uint8array.length; i += maxChunkLength) {
 
 // structure info of wires in vcdstream.info
 console.log(vcdstream.info);
-
 ```
 
 ---
