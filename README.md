@@ -6,25 +6,34 @@ Value Change Dump ([VCD](https://en.wikipedia.org/wiki/Value_change_dump)) parse
 
 2. clone https://github.com/Digital-EDA/digital-vcd-parser
 
-## Build
+## 构建
 
 ```bash
 source $EMCC_HOME/emsdk_env.sh
-# once only
+
+# 只需要运行一次
 npm install browserify terser node-gyp -g
-# once only
+# 只需要运行一次
 npm i
+
+# 构建左推解析器代码（每次修改 ./bin/build.js 都需要重新运行）
+node bin/build.js
+
 # build
 make -j 12
 ```
 
-production are :
+生成 :
 
 - `./out/vcd.js`
 - `./out/vcd.wasm`
 
-move them to your development worksapce.
+部署代码：
 
+```bash
+# 将生成的 wasm 通过 浏览器化和特殊处理后部署到 render 项目中
+source deploy.sh /mnt/c/Users/11934/Project/Digital-IDE/digital-vcd-render
+```
 
 ## Test
 

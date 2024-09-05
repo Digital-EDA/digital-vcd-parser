@@ -77,6 +77,7 @@ int stringEq(const unsigned char* i,  // search pattern
 int commandSpan(vcd_parser_t* state, const unsigned char* p,
                 const unsigned char* endp) {
     const uint8_t command = state->command;
+
 #ifndef VCDWASM
     napi_env env = state->napi_env;
 
@@ -117,7 +118,7 @@ int commandSpan(vcd_parser_t* state, const unsigned char* p,
         return 0;
     }
 #else
-    if ((command > 0) && (command < 8)) {
+    if ((command > 0) && (command < 8)) {        
         const int len = endp - p;
         int tailLen = 3;
         if (len < 4) {

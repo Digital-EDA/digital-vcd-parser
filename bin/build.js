@@ -125,7 +125,8 @@ const generate = (cb) => {
         $dumpon: 11,
         $dumpvars: 12,
         '#': 13,
-        '0': 14, '1': 15,
+        '0': 14,
+        '1': 15,
         x: 16, X: 17,
         z: 18, Z: 19,
         u: 20, U: 21, // VHDL states
@@ -136,9 +137,12 @@ const generate = (cb) => {
         b: 30, B: 31, r: 32, R: 33
     });
 
+    console.log(cmd);
+
+    // p.code.store('command') 的具体执行逻辑移步 command-handler.js 中的 commandHandler
     declaration
         .match(spaces, declaration)
-        .select(cmd('$scope $var $upscope $comment $date $timescale $version'),
+        .select(cmd('$scope $var $upscope $comment $date $timescale $version #'),
             p.invoke(p.code.store('command'), commandSpan.start(inDeclaration)))
         .select(cmd('$enddefinitions'),
             p.invoke(p.code.store('command'), commandSpan.start(enddefinitions)))

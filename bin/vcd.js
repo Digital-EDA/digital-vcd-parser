@@ -5,9 +5,13 @@ const createVCD = require('../out/vcd.js');
 const webVcdParser = require('../lib/web-vcd-parser.js');
 
 /**
- * @typedef {{ maxChunkLength: number, useGcd: boolean }} consumeConfig
+ * @typedef {Object} consumeConfig
+ * @property {number} maxChunkLength
+ * @property {boolean} useGcd 
  * 
- * @typedef {{ kind: string, wave: number[] }} vcdValue
+ * @typedef {Object} vcdValue
+ * @property {string} kind
+ * @property {number[]} wave
  * 
  * @typedef {Object} VarSignal
  * @property { 'var' } kind

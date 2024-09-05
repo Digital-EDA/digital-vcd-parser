@@ -1,0 +1,114 @@
+#0 $dumpon
+$date today $end
+$timescale 1 ns $end
+$scope module top $end
+$var wire 1 0 ins_top_s4/inst_apb3_device/extern_trigger_top_inst/line1_debounced $end
+$var wire 1 1 ins_top_s4/inst_apb3_device/extern_trigger_top_inst/line2_debounced $end
+$var wire 4 2 ins_top_s4/inst_apb3_device/extern_trigger_top_inst/encoder_control_top_inst/trigger_line $end
+$var wire 2 3 ins_top_s4/inst_apb3_device/extern_trigger_top_inst/encoder_control_top_inst/encoder_trigger_mode $end
+$var wire 2 4 ins_top_s4/inst_apb3_device/extern_trigger_top_inst/encoder_control_top_inst/encoder_sourceA_sel $end
+$var wire 2 5 ins_top_s4/inst_apb3_device/extern_trigger_top_inst/encoder_control_top_inst/encoder_sourceB_sel $end
+$var wire 1 6 ins_top_s4/inst_apb3_device/extern_trigger_top_inst/encoder_control_top_inst/encoder_counter_rst $end
+$var wire 32 7 ins_top_s4/inst_apb3_device/extern_trigger_top_inst/encoder_control_top_inst/encoder_counter $end
+$var wire 2 8 ins_top_s4/inst_apb3_device/extern_trigger_top_inst/encoder_control_top_inst/encoder_counter_mode $end
+$var wire 1 9 ins_top_s4/inst_apb3_device/extern_trigger_top_inst/encoder_trigger_out $end
+$var wire 1 a ins_top_s4/inst_apb3_device/extern_trigger_top_inst/encoder_control_top_inst/encoder_sourceA $end
+$var wire 1 b ins_top_s4/inst_apb3_device/extern_trigger_top_inst/encoder_control_top_inst/encoder_sourceB $end
+$var wire 1 c ins_top_s4/inst_apb3_device/extern_trigger_top_inst/encoder_control_top_inst/trigger_forward $end
+$var wire 1 d ins_top_s4/inst_apb3_device/extern_trigger_top_inst/encoder_control_top_inst/trigger_backward $end
+$var wire 2 e ins_top_s4/inst_apb3_device/extern_trigger_top_inst/encoder_control_top_inst/u1_encoder2trigger/encoder_sourceA_dly $end
+$var wire 2 f ins_top_s4/inst_apb3_device/extern_trigger_top_inst/encoder_control_top_inst/u1_encoder2trigger/encoder_sourceB_dly $end
+$var wire 1 10 ins_top_s4/inst_apb3_device/extern_trigger_top_inst/encoder_control_top_inst/u1_encoder2trigger/encoder_sourceA_pos $end
+$var wire 1 11 ins_top_s4/inst_apb3_device/extern_trigger_top_inst/encoder_control_top_inst/u1_encoder2trigger/encoder_sourceA_neg $end
+$var wire 1 12 ins_top_s4/inst_apb3_device/extern_trigger_top_inst/encoder_control_top_inst/u1_encoder2trigger/encoder_sourceB_neg $end
+$var wire 1 13 ins_top_s4/inst_apb3_device/extern_trigger_top_inst/encoder_control_top_inst/u1_encoder2trigger/trigger_forward0 $end
+$var wire 1 14 ins_top_s4/inst_apb3_device/extern_trigger_top_inst/encoder_control_top_inst/u1_encoder2trigger/trigger_forward1 $end
+$var wire 1 15 ins_top_s4/inst_apb3_device/extern_trigger_top_inst/encoder_control_top_inst/u1_encoder2trigger/trigger_forward2 $end
+$var wire 1 16 ins_top_s4/inst_apb3_device/extern_trigger_top_inst/encoder_control_top_inst/u1_encoder2trigger/trigger_forward3 $end
+$var wire 1 17 ins_top_s4/inst_apb3_device/extern_trigger_top_inst/encoder_control_top_inst/u1_encoder2trigger/trigger_backward0 $end
+$var wire 1 18 ins_top_s4/inst_apb3_device/extern_trigger_top_inst/encoder_control_top_inst/u1_encoder2trigger/trigger_backward1 $end
+$var wire 1 19 ins_top_s4/inst_apb3_device/extern_trigger_top_inst/encoder_control_top_inst/u1_encoder2trigger/trigger_backward3 $end
+$var wire 1 1a ins_top_s4/inst_apb3_device/extern_trigger_top_inst/encoder_control_top_inst/u1_encoder2trigger/trigger_backward2 $end
+$var wire 32 1b ins_top_s4/inst_apb3_device/extern_trigger_top_inst/encode_rcounter $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+00
+11
+b1110 2
+b00 3
+b00 4
+b01 5
+06
+b00000000000000000010000111001101 7
+b00 8
+09
+0a
+1b
+0c
+0d
+b00 e
+b11 f
+010
+011
+012
+013
+014
+015
+016
+017
+018
+019
+01a
+b00000000000000000000000000000000 1b
+$end
+#1021
+10
+b1111 2
+#1022
+1a
+#1023
+b01 e
+110
+117
+#1024
+1d
+b11 e
+010
+017
+#1025
+b00000000000000000010000111001110 7
+19
+0d
+#1026
+09
+#2047
+10
+11
+b1111 2
+b00 3
+b00 4
+b01 5
+06
+b00000000000000000010000111001110 7
+b00 8
+09
+1a
+1b
+0c
+0d
+b11 e
+b11 f
+010
+011
+012
+013
+014
+015
+016
+017
+018
+019
+01a
+b00000000000000000000000000000000 1b

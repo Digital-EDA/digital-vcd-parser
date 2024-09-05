@@ -133,15 +133,17 @@ int init(externalJsMethodZero* f0, externalJsMethodOne* f1,
 int32_t execute(const int context, externalJsMethodZero* f0,
                 externalJsMethodOne* f1, externalJsSetProperty* sfn,
                 externalJsGetProperty* gfn, char* p, const int plen) {
-    // cout << "execute got " << p << "\n";
-    // cout << "execute " << (int)sfn << " and got " << p << "\n";
+    // 详见 web-vcd-parser.js 中的 boundSet
     bound_set_property = sfn;
-    bound_get_property = gfn;
-    externalZero = f0;
-    externalOne = f1;
 
-    // const size_t plen = strlen(p);
-    // printf("<chunk len|%d>\n", plen);
+    // 详见 web-vcd-parser.js 中的 boundGet
+    bound_get_property = gfn;
+
+    // 详见 web-vcd-parser.js 中的 boundEE0
+    externalZero = f0;
+
+    // 详见 web-vcd-parser.js 中的 boundEE1
+    externalOne = f1;
 
     const int32_t error = vcd_parser_execute(state, p, p + plen);
 
