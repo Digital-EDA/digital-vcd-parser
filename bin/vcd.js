@@ -110,8 +110,8 @@ function parseTimescale(timescale) {
  *  clean: () => void
  * }}
  */
-async function makeVcdStream() {
-    const vcdstream = await getVcdStream();
+async function makeVcdStream(moduleArg) {
+    const vcdstream = await getVcdStream(moduleArg);
     // 使用 vcdstream 的 any 回调获取波形数据，并按照正确的格式进行解码和存储
     // 这段处理来自 https://github.com/wavedrom/vcd 的 vcd-pipe-deso.js 的 58 行
     // 请严格对准转换规则
@@ -203,8 +203,8 @@ function consume(vcdstream, arraybuffer, config) {
     }
 }
 
-async function getVcdStream() {
-  const wasm = await createVCD();
+async function getVcdStream(moduleArg) {
+  const wasm = await createVCD(moduleArg);
   const vcdstream = await webVcdParser(wasm);
   return vcdstream;
 }
