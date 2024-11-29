@@ -165,12 +165,15 @@ int idSpan(vcd_parser_t* state, const unsigned char* p,
     return 0;
 }
 
-int onId(vcd_parser_t* state, const unsigned char* _p,
-         const unsigned char* _endp) {
-
+int onId(
+    vcd_parser_t* state,
+    const unsigned char* _p,
+    const unsigned char* _endp
+) {
     const unsigned char* p = (unsigned char*)state->idStr;
     const unsigned int plen = strlen((char*)p) - 1;
-    *(char*)(p + plen) = 0;  // null instead of space
+    *(char*)(p + plen) = 0;
+    // null instead of space
     const unsigned char* endp = p + plen - 1;
 
     const int valueWords = (state->digitCount + 63) >> 6;
@@ -179,13 +182,20 @@ int onId(vcd_parser_t* state, const unsigned char* _p,
     uint64_t* mask = state->mask;
     if (stringEq((state->trigger), p, endp)) {
         const uint8_t command = state->command;
+
+        if (state->time == 50625000 && *p == '#') {
+            printf("current link: %s\n", (char*)p);
+            printf("plen %u\n", plen);
+        }
+
+        // 通过回调函数发送到 JavaScript 端
         emit_triee(
-            (char*)p,
-            state->time,
-            command,
-            valueWords,
+            (char*)p,       // wave 的 link
+            state->time,    // 当前的时间
+            command,        // 命令，[14, 28] 之内是 bit，其余是 vec（如果是 bit，该值减去 14 代表当前的 bit 的值）
+            valueWords,     // value，vec 专用
             value,
-            maskWords,
+            maskWords,      // mask，vec 专用
             mask
         );
     }
@@ -254,7 +264,6 @@ int timeSpan(
     const unsigned char* endp
 ) {
     strconcat(p, endp, state->timeStampStr);
-    char* timeStampStr = (char*)state->timeStampStr;
     return 0;
 }
 
@@ -284,7 +293,6 @@ int onTime(vcd_parser_t* state, const unsigned char* _p,
     // }
 
     const int64_t time = strtoul(state->timeStampStr, &end, 10);
-
 
     if (state->time == INT64_MAX) {
         set_property_int("t0", time);
