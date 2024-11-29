@@ -7,16 +7,6 @@ const fs = require('fs');
 const cp = require('child_process');
 const llparse = require('llparse');
 
-const gyp = cb => {
-    console.log('build');
-    const proc = cp.spawn('node-gyp', ['configure', 'build']);
-    proc.stderr.on('data', data => {
-        console.error(data.toString());
-    });
-    proc.on('close', (cb || (() => {
-        console.log('done');
-    })));
-};
 
 const objection = lut => arg => arg.split(/\s+/).reduce((res, key) => {
     if (lut[key] === undefined) {
@@ -51,65 +41,55 @@ const properties = {
 const spaces = [' ', '\n', '\r', '\t'];
 const lineSpaces = [' ', '\t'];
 
-const generate = (cb) => {
-    // const llparseDot = require('llparse-dot');
+function main() {
+    const projectName = 'vcd_parser';
 
-    const prj = 'vcd_parser';
-    const p = new llparse.LLParse(prj);
+    // 有关左推解析器框架 llparse 的文章，移步我之前的博客：https://kirigaya.cn/blog/article?seq=223
+    // 如果需要可视化项目图，可以取消下面的注释
+    // const { Dot } = require('llparse-dot');
+    // const llDot = new Dot();
+    // const dotCodeString = llDot.build(method);
+    // fs.writeFileSync(projectName + '.dot', code, { encoding: 'utf-8' });
+    
+    // 项目名为 vcd_parser
+    const p = new llparse.LLParse(projectName);
+    
+    // 注册一些属性
+    for (const propertyName of Object.keys(properties)) {
+        const propertyType = properties[propertyName];
+        p.property(propertyType, propertyName);
+    }
 
-    Object.keys(properties).map(key => p.property(properties[key], key));
-
-    const {
-        // scopeIdentifierSpan,
-        varSizeSpan, varIdSpan, varNameSpan,
-        idSpan,
-        commandSpan,
-        timeSpan
-    } = `
-    varSizeSpan varIdSpan varNameSpan
-    idSpan
-    commandSpan
-    timeSpan
-  `
-        .trim().split(/\s+/)
-        .reduce((res, n) => Object.assign(res, { [n]: p.span(p.code.span(n)) }), {});
-
-    // scopeIdentifierSpan
-
-    const {
-        declaration,
-        // scopeType, scopeTypeEnd,
-        // scopeIdentifier, scopeIdentifierEnd,
-        varType, varTypeEnd,
-        varSize, varSizeEnd,
-        varId, varIdEnd,
-        varName, varNameEnd,
-        inDeclaration,
-        simulation,
-        inSimulation,
-        simulationTime,
-        simulationVector, simulationVectorEnd, simulationVectorRecovery,
-        simulationId
-    } = `
-    declaration
-    varType varTypeEnd
-    varSize varSizeEnd
-    varId varIdEnd
-    varName varNameEnd
-    inDeclaration
-    simulation
-    inSimulation
-    simulationTime
-    simulationVector simulationVectorEnd simulationVectorRecovery
-    simulationId
-  `
-        .trim().split(/\s+/)
-        .reduce((res, n) => Object.assign(res, { [n]: p.node(n) }), {});
-
+    // 自定义 code span，对于游走到这些 span 后要如何处理，都在 vcd_span.c 文件里
+    // 比如对于 varNameSpan 的定义，在 vcd_span.c 中存在一个同名的函数来定义它
+    const varSizeSpan   = p.span(p.code.span('varSizeSpan'));
+    const varIdSpan     = p.span(p.code.span('varIdSpan'));
+    const varNameSpan   = p.span(p.code.span('varNameSpan'));
+    const idSpan        = p.span(p.code.span('idSpan'));
+    const commandSpan   = p.span(p.code.span('commandSpan'));
+    const timeSpan      = p.span(p.code.span('timeSpan'));
+    
+    // 自定义 node, 他们都是具体的节点
+    const declaration              = p.node('declaration');
+    const varType                  = p.node('varType');
+    const varTypeEnd               = p.node('varTypeEnd');
+    const varSize                  = p.node('varSize');
+    const varSizeEnd               = p.node('varSizeEnd');
+    const varId                    = p.node('varId');
+    const varIdEnd                 = p.node('varIdEnd');
+    const varName                  = p.node('varName');
+    const varNameEnd               = p.node('varNameEnd');
+    const inDeclaration            = p.node('inDeclaration');
+    const simulation               = p.node('simulation');
+    const inSimulation             = p.node('inSimulation');
+    const simulationTime           = p.node('simulationTime');
+    const simulationVector         = p.node('simulationVector');
+    const simulationVectorEnd      = p.node('simulationVectorEnd');
+    const simulationVectorRecovery = p.node('simulationVectorRecovery');
+    const simulationId             = p.node('simulationId');
+    const enddefinitions           = p.node('inDeclarationEnd');
     // scopeType scopeTypeEnd
     // scopeIdentifier scopeIdentifierEnd
-
-    const enddefinitions = p.node('inDeclarationEnd');
 
     const cmd = objection({
         $comment: 1,
@@ -137,7 +117,6 @@ const generate = (cb) => {
         b: 30, B: 31, r: 32, R: 33
     });
 
-    console.log(cmd);
 
     // p.code.store('command') 的具体执行逻辑移步 command-handler.js 中的 commandHandler
     declaration
@@ -266,19 +245,24 @@ const generate = (cb) => {
 
     const artifacts = p.build(declaration);
 
-    fs.writeFileSync(prj + '.h', artifacts.header);
+    fs.writeFileSync(projectName + '.h', artifacts.header);
     // fs.writeFileSync('verilog_preprocessor.bc', artifacts.bitcode);
-    fs.writeFileSync(prj + '.c', artifacts.c);
+    fs.writeFileSync(projectName + '.c', artifacts.c);
 
     // const dot = new llparseDot.Dot();
-    // fs.writeFileSync(prj + '.dot', dot.build(declaration));
+    // fs.writeFileSync(projectName + '.dot', dot.build(declaration));
 
-    if (cb) {
-        cb();
-    }
+    // 使用 binding.gyp 把生成的 c 和 h 进行编译
+    console.log('build');
+    const proc = cp.spawn('node-gyp', ['configure', 'build']);
+    proc.stderr.on('data', data => {
+        console.error(data.toString());
+    });
+    proc.on('close', () => {
+        console.log('done');
+    });
 };
 
-generate(gyp);
-// generate();
+main();
 
 /* eslint camelcase: 0 */

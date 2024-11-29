@@ -48,8 +48,11 @@ void strconcat(const unsigned char* p, const unsigned char* endp,
 }
 
 // FIXME use a better structure to match strings
-int stringEq(const unsigned char* i,  // search pattern
-             const unsigned char* p, const unsigned char* endp) {
+int stringEq(
+    const unsigned char* i,  // search pattern
+    const unsigned char* p,
+    const unsigned char* endp
+) {
     if (*i == 0) {
         return 1;
     }
@@ -78,46 +81,6 @@ int commandSpan(vcd_parser_t* state, const unsigned char* p,
                 const unsigned char* endp) {
     const uint8_t command = state->command;
 
-#ifndef VCDWASM
-    napi_env env = state->napi_env;
-
-    // if (command == 5) { // $upscope
-    //   state->stackPointer -= 1;
-    //   return 0;
-    // }
-
-    if ((command == 1) ||  // $comment
-        (command == 2) ||  // $date
-        (command == 3) ||  // $scope
-        (command == 4) ||  // $timescale
-        (command == 5) ||  // $upscope
-        (command == 6) ||  // $var
-        (command == 7)     // $version
-    ) {
-        char* key;
-        switch (command) {
-            case 1:
-                key = "comment";
-                break;
-            case 2:
-                key = "date";
-                break;
-            case 4:
-                key = "timescale";
-                break;
-            // case 6: key = "var"; break;
-            case 7:
-                key = "version";
-                break;
-        }
-
-        napi_value val;
-        ASSERT(val,
-               napi_create_string_latin1(env, (char*)p, (endp - p - 4), &val))
-        ASSERT(state->info, napi_set_named_property(env, state->info, key, val))
-        return 0;
-    }
-#else
     if ((command > 0) && (command < 8)) {        
         const int len = endp - p;
         int tailLen = 3;
@@ -129,30 +92,13 @@ int commandSpan(vcd_parser_t* state, const unsigned char* p,
         on_command(state->tmpStr, command);
         return 0;
     }
-#endif
 
     if (command == 8) {  // $enddefinitions
         *(char*)state->idStr = 0;
         *(char*)state->timeStampStr = 0;
-#ifndef VCDWASM
-        napi_value status, undefined, eventName, eventPayload, return_val;
-        ASSERT(status, napi_create_string_latin1(env, "simulation",
-                                                 NAPI_AUTO_LENGTH, &status))
-        ASSERT(state->info,
-               napi_set_named_property(env, state->info, "status", status))
-        ASSERT(undefined, napi_get_undefined(env, &undefined))
-        ASSERT(eventName,
-               napi_create_string_latin1(env, "$enddefinitions",
-                                         NAPI_AUTO_LENGTH, &eventName))
-        // ASSERT(eventPayload, napi_create_string_latin1(env, "payload",
-        // NAPI_AUTO_LENGTH, &eventPayload))
-        napi_value* argv[] = {&eventName};  // , &eventPayload };
-        ASSERT(state->lifee, napi_call_function(env, undefined, state->lifee, 1,
-                                                *argv, &return_val))
-#else
+
         set_property_string("status", "simulation");
         emit_lifee("$enddefinitions");
-#endif
         return 0;
     }
 
@@ -162,22 +108,7 @@ int commandSpan(vcd_parser_t* state, const unsigned char* p,
 int scopeIdentifierSpan(vcd_parser_t* state, const unsigned char* p,
                         const unsigned char* endp) {
     strcopy(p, endp, state->tmpStr);  // load the value into temp string 1
-#ifndef VCDWASM
-    napi_env env = state->napi_env;
-    napi_value obj, stack, top;
-    ASSERT(obj, napi_create_object(env, &obj))
-    ASSERT(state->info,
-           napi_get_named_property(env, state->info, "stack", &stack))
 
-    // get the top of the stack in top
-    ASSERT(top, napi_get_element(env, stack, state->stackPointer, &top))
-
-    // set top.prop to new object
-    ASSERT(top, napi_set_named_property(env, top, state->tmpStr, obj))
-
-    state->stackPointer += 1;
-    ASSERT(top, napi_set_element(env, stack, state->stackPointer, obj))
-#else
     // set stack[sp].`tmpStr` to {}
     snprintf(state->tmpStr2, 4096, "stack.%d.%s", state->stackPointer,
              (char*)state->tmpStr);
@@ -190,59 +121,40 @@ int scopeIdentifierSpan(vcd_parser_t* state, const unsigned char* p,
     snprintf(state->tmpStr, 4096, "stack.%d", state->stackPointer);
 
     set_path_to_path(state->tmpStr, state->tmpStr2);
-#endif
+
     return 0;
 }
 
-int varSizeSpan(vcd_parser_t* state, const unsigned char* p,
-                const unsigned char* endp) {
+int varSizeSpan(
+    vcd_parser_t* state,
+    const unsigned char* p,
+    const unsigned char* endp
+) {
     const int32_t size = strtol((const char*)p, (char**)&endp, 10);
     state->size = size;
-#ifndef VCDWASM
-#else
     set_property_int("varType", state->type);
     set_property_int("varSize", size);
-#endif
     return 0;
 }
 
-int varIdSpan(vcd_parser_t* state, const unsigned char* p,
-              const unsigned char* endp) {
-#ifndef VCDWASM
-    napi_env env = state->napi_env;
-    napi_value varId;
-    ASSERT(varId,
-           napi_create_string_latin1(env, (char*)p, (endp - p - 1), &varId))
-    ASSERT(state->info,
-           napi_set_named_property(env, state->info, "varId", varId))
-#else
+int varIdSpan(
+    vcd_parser_t* state,
+    const unsigned char* p,
+    const unsigned char* endp
+) {
     strcopy(p, endp, state->tmpStr);
     set_property_string("varId", state->tmpStr);
-#endif
     return 0;
 }
 
 int varNameSpan(vcd_parser_t* state, const unsigned char* p,
                 const unsigned char* endp) {
-#ifndef VCDWASM
-    napi_env env = state->napi_env;
-    // *(endp - 1) = 0; // FIXME NULL termination of ASCII string
+
     strcopy(p, endp, state->tmpStr);
-    napi_value stack, top, varId;
-    ASSERT(state->info,
-           napi_get_named_property(env, state->info, "stack", &stack))
-    ASSERT(top, napi_get_element(env, stack, state->stackPointer, &top))
-    ASSERT(state->info,
-           napi_get_named_property(env, state->info, "varId", &varId))
-    ASSERT(state->info, napi_set_named_property(env, top, state->tmpStr, varId))
-#else
-    strcopy(p, endp, state->tmpStr);
-    // set
-    //  info.stack[sp].`tmpStr` = info.varId
     snprintf(state->tmpStr2, 4096, "stack.%d.%s", state->stackPointer,
              (char*)state->tmpStr);
     set_path_to_path(state->tmpStr2, "varType,varSize,varId");
-#endif
+
     return 0;
 }
 
@@ -255,14 +167,11 @@ int idSpan(vcd_parser_t* state, const unsigned char* p,
 
 int onId(vcd_parser_t* state, const unsigned char* _p,
          const unsigned char* _endp) {
-#ifndef VCDWASM
-    napi_env env = state->napi_env;
-#endif
+
     const unsigned char* p = (unsigned char*)state->idStr;
     const unsigned int plen = strlen((char*)p) - 1;
     *(char*)(p + plen) = 0;  // null instead of space
     const unsigned char* endp = p + plen - 1;
-    // printf("<onId|%s>\n", (char *)state->idStr);
 
     const int valueWords = (state->digitCount + 63) >> 6;
     const int maskWords = (state->maskCount + 63) >> 6;
@@ -270,39 +179,21 @@ int onId(vcd_parser_t* state, const unsigned char* _p,
     uint64_t* mask = state->mask;
     if (stringEq((state->trigger), p, endp)) {
         const uint8_t command = state->command;
-        // printf("{id:'%s',cmd:%d}", (char *)p, command);
-        // if (command == 14) {
-        //   value[0] = 0;
-        //   mask[0] = 0;
-        // } else
-        // if (command == 15) {
-        //   value[0] = 1;
-        //   mask[0] = 0;
-        // }
-#ifndef VCDWASM
-        napi_value undefined, eventName, aTime, aCommand, aValue, aMask,
-            return_val;
-        ASSERT(undefined, napi_get_undefined(env, &undefined))
-        ASSERT(eventName, napi_create_string_latin1(
-                              env, (char*)p, NAPI_AUTO_LENGTH, &eventName))
-        ASSERT(aTime, napi_create_int64(env, state->time, &aTime))
-        ASSERT(aCommand, napi_create_int32(env, command, &aCommand))
-        ASSERT(aValue,
-               napi_create_bigint_words(env, 0, valueWords, value, &aValue))
-        ASSERT(aMask, napi_create_bigint_words(env, 0, maskWords, mask, &aMask))
-        napi_value* argv[] = {&eventName, &aTime, &aCommand, &aValue, &aMask};
-        ASSERT(state->triee, napi_call_function(env, undefined, state->triee, 5,
-                                                *argv, &return_val))
-        // printf("<id='%s'>", (char *)p);
-#else
-        // strcopy(p, endp, state->tmpStr);
-        emit_triee((char*)p, state->time, command, valueWords, value, maskWords,
-                   mask);
-#endif
+        emit_triee(
+            (char*)p,
+            state->time,
+            command,
+            valueWords,
+            value,
+            maskWords,
+            mask
+        );
     }
+
     for (int i = 0; i < valueWords; i++) {
         value[i] = 0;
     }
+
     for (int i = 0; i < maskWords; i++) {
         mask[i] = 0;
     }
@@ -350,28 +241,53 @@ int onRecover(vcd_parser_t* state, const unsigned char* p,
     return 0;
 }
 
-int timeSpan(vcd_parser_t* state, const unsigned char* p,
-             const unsigned char* endp) {
+int starts_with_50(const char* str) {
+    // 检查字符串的前两位是否为 '5' 和 '0'
+    return str[0] == '5' && str[1] == '0';
+}
+
+uint16_t debug_tag = 0;
+
+int timeSpan(
+    vcd_parser_t* state,
+    const unsigned char* p,
+    const unsigned char* endp
+) {
     strconcat(p, endp, state->timeStampStr);
-    // printf("<timeSpan|%s>\n", (char *)state->timeStampStr);
+    char* timeStampStr = (char*)state->timeStampStr;
     return 0;
 }
+
+// int starts_with_50(int64_t num) {
+//     // 将 int64_t 转换为字符串
+//     char str[21];  // 20 位数字 + 1 位空字符
+//     snprintf(str, sizeof(str), "%lld", num);
+
+//     // 检查字符串的前两位是否为 '5' 和 '0'
+//     if (strlen(str) >= 2 && str[0] == '5' && str[1] == '0') {
+//         return 1;  // 以 50 开头
+//     } else {
+//         return 0;  // 不以 50 开头
+//     }
+// }
+
+
+
 
 int onTime(vcd_parser_t* state, const unsigned char* _p,
            const unsigned char* _endp) {
     char* end;
+
+    // char* timeStampStr = (char*)state->timeStampStr;
+    // if (starts_with_50(timeStampStr)) {
+    //     printf("current time: %s", timeStampStr);
+    // }
+
     const int64_t time = strtoul(state->timeStampStr, &end, 10);
-    // printf("<onTime|%lu>\n", time);
+
+
     if (state->time == INT64_MAX) {
-#ifndef VCDWASM
-        napi_env env = state->napi_env;
-        napi_value val;
-        ASSERT(val, napi_create_int64(env, time, &val))
-        ASSERT(state->info,
-               napi_set_named_property(env, state->info, "t0", val))
-#else
         set_property_int("t0", time);
-#endif
     }
     state->time = time;
     *(char*)state->timeStampStr = 0;

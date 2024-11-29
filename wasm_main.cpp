@@ -62,8 +62,12 @@ int get_property_int(const char* name) {
     return bound_get_property(name, strlen(name));
 }
 
-void emit_lifee(const char* name) { externalZero(name, strlen(name)); }
+// 触发外部的第一个回调函数
+void emit_lifee(const char* name) {
+    externalZero(name, strlen(name));
+}
 
+// 触发外部的第二个回调函数
 void emit_triee(const char* name, const int64_t time, const int command,
                 const int valueWords, uint64_t* aValue, const int maskWords,
                 uint64_t* aMask) {
@@ -81,7 +85,7 @@ void emit_triee(const char* name, const int64_t time, const int command,
                 maskWords, (int)aMask);
 }
 
-// returns context
+// 挂载回调函数和上下文
 int init(externalJsMethodZero* f0, externalJsMethodOne* f1,
          externalJsSetProperty* sfn, externalJsGetProperty* gfn) {
     state = (struct vcd_parser_s*)malloc(sizeof *state);
@@ -162,7 +166,6 @@ int setTrigger(const int context, char* triggerString) {
         *(p + i) = c;
     }
     // strcpy((char*)state->trigger, triggerString);
-    // cout << "[" << triggerString << "|" << p << "\n";
     return 0;
 }
 
@@ -177,8 +180,6 @@ int64_t getTime(const int context) { return state->time; }
 //   char* chunk
 //   ) {
 
-//   // cout << "execute got " << p << "\n";
-//   cout << "execute " << (int)sfn << " and got " << chunk << "\n";
 //   bound_set_property = sfn;
 //   bound_get_property = gfn;
 //   externalZero = f0;
@@ -187,13 +188,9 @@ int64_t getTime(const int context) { return state->time; }
 //   set_property_int("foo", 10);
 
 //   int got = get_property_int("bar");
-
-//   cout << "got " << got << " for bar\n";
-
 // }
 
 int main(void) {
-    // cout << "main()\n";
     return 0;
 }
 

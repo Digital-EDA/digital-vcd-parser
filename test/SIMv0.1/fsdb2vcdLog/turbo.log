@@ -1,0 +1,6 @@
+Command Line: /home/kumon/Synopsys/verdi/T-2022.06/platform/LINUXAMD64/bin/fsdb2vcd Tb_Sync_FIFO.fsdb -o Tb_Sync_FIFO.vcd
+uname(Linux EDA-VM3 6.8.0-48-generic #48~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Mon Oct  7 11:24:13 UTC 2 x86_64)
+Load signals (0)-(250013500) time 0.028210 0.156188 0.001739 delta 151891968 151891968 total 438681600 438681600
+Write signals (0)-(250013500) time 0.047141 0.047140 0.000000 delta 0 0 total 438681600 438681600
+Unload (0)-(250013500) time 0.000020 0.000019 0.000000 delta 0 0 total 438681600 438681600
+au time 0.185725 0.205310 0.008924 delta 215785472 215785472 total 325173248 325173248

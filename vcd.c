@@ -184,6 +184,8 @@ METHOD(done) {
     return res;
 }
 
+// 编译为 wasm 后可以通过 wasm.cwrap('execute', 'number', ['number', 'number', 'number', 'number', 'number', 'array', 'number'])
+// 来获取到这个函数在 js runtime 中的调用
 METHOD(execute) {
     ASSERT_ARGC(5)
     struct vcd_parser_s *state;

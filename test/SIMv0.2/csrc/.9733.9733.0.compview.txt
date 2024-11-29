@@ -1,0 +1,9 @@
+{"vcs1":{"timestamp_begin":1732793670.162945387, "rt":4.95, "ut":0.29, "st":0.04}}
+{"vcselab":{"timestamp_begin":1732793675.145578813, "rt":4.74, "ut":0.10, "st":0.05}}
+{"link":{"timestamp_begin":1732793679.911069248, "rt":0.08, "ut":0.06, "st":0.02}}
+{"SNPS_VCS_INTERNAL_ROOT_START_TIME": 1732793669.814054492}
+{"VCS_COMP_START_TIME": 1732793669.814054492}
+{"VCS_COMP_END_TIME": 1732793680.048837207}
+{"VCS_USER_OPTIONS": "-f /home/icer/Project/ASICs/virtual_project/sync_fifo_flow/user/sim/file_list/asic_fun_sim.f -o simv -l ./vcs.log +v2k +libext+.v+.V+.sv+.svh -sverilog -debug_access -timescale=1ns/1ps -P /home/kumon/Synopsys/verdi/T-2022.06/share/PLI/VCS/LINUX64/novas.tab /home/kumon/Synopsys/verdi/T-2022.06/share/PLI/VCS/LINUX64/pli.a -top Tb_Sync_FIFO -full64 -debug_all +vcs+initreg+random +notimingcheck -Mupdate -ucli -error=IWNF +lint=TFIPC-L"}
+{"vcs1": {"peak_mem": 10466}}
+{"stitch_vcselab": {"peak_mem": 10504}}

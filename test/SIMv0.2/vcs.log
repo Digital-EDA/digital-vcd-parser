@@ -1,0 +1,95 @@
+
+Warning-[DEBUG_DEP] Option will be deprecated
+  The option '-debug_all' will be deprecated in a future release.  Please use 
+  '-debug_acc+all+dmptf -debug_region+cell+encrypt' instead.
+
+
+Error-[DBG_UCLI_DEP] Option -ucli/-gui is deprecated
+  The option '-ucli/-gui' can only be used in conjunction with '-R' and 
+  '-debug*'.
+
+
+Warning-[DBGACC_DBG] Multiple debug options being used
+  The debug switches '-debug_access' and '-debug_all' are being used together.
+  For better performance, consider using only '-debug_access'.
+
+Command: vcs -f /home/icer/Project/ASICs/virtual_project/sync_fifo_flow/user/sim/file_list/asic_fun_sim.f \
+-o simv -l ./vcs.log +v2k +libext+.v+.V+.sv+.svh -sverilog -debug_access -timescale=1ns/1ps \
+-P /home/kumon/Synopsys/verdi/T-2022.06/share/PLI/VCS/LINUX64/novas.tab /home/kumon/Synopsys/verdi/T-2022.06/share/PLI/VCS/LINUX64/pli.a \
+-top Tb_Sync_FIFO -full64 -debug_all +vcs+initreg+random +notimingcheck -Mupdate \
+-ucli -error=IWNF +lint=TFIPC-L
+                         Chronologic VCS (TM)
+         Version T-2022.06_Full64 -- Thu Nov 28 19:34:30 2024
+
+                    Copyright (c) 1991 - 2022 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+   or distribution of this software is strictly prohibited.  Licensed Products
+     communicate with Synopsys servers for the purpose of providing software
+    updates, detecting software piracy and verifying that customers are using
+    Licensed Products in conformity with the applicable License Key for such
+  Licensed Products. Synopsys will use information gathered in connection with
+    this process to deliver software updates and pursue software pirates and
+                                   infringers.
+
+ Inclusivity & Diversity - Visit SolvNetPlus to read the "Synopsys Statement on
+            Inclusivity and Diversity" (Refer to article 000036315 at
+                        https://solvnetplus.synopsys.com)
+
+
+Warning-[DEBUG_DEP] Option will be deprecated
+  The option '-debug_all' will be deprecated in a future release.  Please use 
+  '-debug_acc+all -debug_region+cell+encrypt' instead.
+
+Parsing design file '/home/icer/Project/ASICs/virtual_project/sync_fifo_flow/user/sim/Tb_Sync_FIFO.sv'
+Parsing design file '/home/icer/Project/ASICs/virtual_project/sync_fifo_flow/user/src/Sync_FIFO.sv'
+Parsing design file '/home/icer/Project/ASICs/virtual_project/sync_fifo_flow/user/src/tem5n28hpcplvta64x20m4swbso_110a_tt0p9v25c.v'
+Top Level Modules:
+       Tb_Sync_FIFO
+TimeScale is 1 ns / 1 ps
+
+Warning-[PCWM-W] Port connection width mismatch
+/home/icer/Project/ASICs/virtual_project/sync_fifo_flow/user/sim/Tb_Sync_FIFO.sv, 135
+"Sync_FIFO #(P_DATA_WIDTH, P_FIFO_DEPTH, ) u_Sync_FIFO( .i_clk (clk),  .i_rst_n (rst_n),  .i_wren (wren),  .i_rden (rden),  .i_wdata (wdata),  .o_rdata (rdata),  .o_rddata_valid (rddata_valid),  .o_fifo_full (fifo_full),  .o_fifo_empty (fifo_empty),  .i_cfg_almost_full (3),  .i_cfg_almost_empty (3),  .o_fifo_almost_full (fifo_almost_full),  .o_fifo_almost_empty (fifo_almost_empty),  .o_fifo_space (fifo_space));"
+  The following 32-bit expression is connected to 6-bit port 
+  "i_cfg_almost_full" of module "Sync_FIFO", instance "u_Sync_FIFO".
+  Expression: 3
+  Instantiated module defined at: 
+  "/home/icer/Project/ASICs/virtual_project/sync_fifo_flow/user/src/Sync_FIFO.sv",
+  3
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/home/icer/Project/ASICs/virtual_project/sync_fifo_flow/user/sim/Tb_Sync_FIFO.sv, 135
+"Sync_FIFO #(P_DATA_WIDTH, P_FIFO_DEPTH, ) u_Sync_FIFO( .i_clk (clk),  .i_rst_n (rst_n),  .i_wren (wren),  .i_rden (rden),  .i_wdata (wdata),  .o_rdata (rdata),  .o_rddata_valid (rddata_valid),  .o_fifo_full (fifo_full),  .o_fifo_empty (fifo_empty),  .i_cfg_almost_full (3),  .i_cfg_almost_empty (3),  .o_fifo_almost_full (fifo_almost_full),  .o_fifo_almost_empty (fifo_almost_empty),  .o_fifo_space (fifo_space));"
+  The following 32-bit expression is connected to 6-bit port 
+  "i_cfg_almost_empty" of module "Sync_FIFO", instance "u_Sync_FIFO".
+  Expression: 3
+  Instantiated module defined at: 
+  "/home/icer/Project/ASICs/virtual_project/sync_fifo_flow/user/src/Sync_FIFO.sv",
+  3
+  Use +lint=PCWM for more details.
+
+Starting vcs inline pass...
+
+1 module and 0 UDP read.
+recompiling module Tb_Sync_FIFO
+make[1]: Entering directory '/home/icer/Project/ASICs/virtual_project/sync_fifo_flow/prj/SIMv0.2/csrc' \
+
+rm -f _cuarc*.so _csrc*.so pre_vcsobj_*.so share_vcsobj_*.so
+if [ -x ../simv ]; then chmod a-x ../simv; fi
+g++  -o ../simv      -rdynamic  -Wl,-rpath='$ORIGIN'/simv.daidir -Wl,-rpath=./simv.daidir \
+-Wl,-rpath=/home/kumon/Synopsys/vcs/T-2022.06/linux64/lib -L/home/kumon/Synopsys/vcs/T-2022.06/linux64/lib \
+-Wl,-rpath-link=./   objs/amcQw_d.o  _10466_archive_1.so  SIM_l.o       rmapats_mop.o \
+rmapats.o rmar.o rmar_nd.o  rmar_llvm_0_1.o rmar_llvm_0_0.o           -lnuma -lvirsim \
+-lerrorinf -lsnpsmalloc -lvfs /home/kumon/Synopsys/verdi/T-2022.06/share/PLI/VCS/LINUX64/pli.a \
+-lvcsnew -lsimprofile -luclinative /home/kumon/Synopsys/vcs/T-2022.06/linux64/lib/vcs_tls.o \
+-Wl,-whole-archive  -lvcsucli    -Wl,-no-whole-archive       _vcs_pli_stub_.o   /home/kumon/Synopsys/vcs/T-2022.06/linux64/lib/vcs_save_restore_new.o \
+/home/kumon/Synopsys/verdi/T-2022.06/share/PLI/VCS/LINUX64/pli.a -ldl -lm  -lc -lpthread \
+-ldl 
+../simv up to date
+make[1]: Leaving directory '/home/icer/Project/ASICs/virtual_project/sync_fifo_flow/prj/SIMv0.2/csrc' \
+
+CPU time: .365 seconds to compile + .171 seconds to elab + .123 seconds to link

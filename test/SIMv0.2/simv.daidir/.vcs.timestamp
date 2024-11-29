@@ -1,0 +1,132 @@
+0 
+50
++itf+/home/kumon/Synopsys/vcs/T-2022.06/linux64/lib/vcsdp_lite.tab
++libext+.v+.V+.sv+.svh
++lint=TFIPC-L
++notimingcheck
++v2k
++vcs+initreg+random
++vcsd1
++vpi
+-Mamsrun=
+-Masflags=
+-Mcc=gcc
+-Mcfl= -pipe -fPIC -O -I/home/kumon/Synopsys/vcs/T-2022.06/include
+-Mcplusplus=g++
+-Mcrt0=
+-Mcrtn=
+-Mcsrc=
+-Mexternalobj=
+-Mldflags= -rdynamic
+-Mobjects= /home/kumon/Synopsys/vcs/T-2022.06/linux64/lib/libvirsim.so /home/kumon/Synopsys/vcs/T-2022.06/linux64/lib/liberrorinf.so /home/kumon/Synopsys/vcs/T-2022.06/linux64/lib/libsnpsmalloc.so /home/kumon/Synopsys/vcs/T-2022.06/linux64/lib/libvfs.so /home/kumon/Synopsys/verdi/T-2022.06/share/PLI/VCS/LINUX64/pli.a
+-Mout=simv
+-Msaverestoreobj=/home/kumon/Synopsys/vcs/T-2022.06/linux64/lib/vcs_save_restore_new.o
+-Msyslibs=/home/kumon/Synopsys/verdi/T-2022.06/share/PLI/VCS/LINUX64/pli.a -ldl -lm
+-Mupdate
+-Mvcsaceobjs=
+-Mxcflags= -pipe -fPIC -I/home/kumon/Synopsys/vcs/T-2022.06/include
+-Mxllcflags=
+-P
+-P
+-debug_access
+-debug_access+all+bc
+-debug_region+cell
+-error=IWNF
+-f /home/icer/Project/ASICs/virtual_project/sync_fifo_flow/user/sim/file_list/asic_fun_sim.f
+-fsdb
+-full64
+-gen_obj
+-l
+-o simv
+-picarchive
+-sverilog
+-timescale=1ns/1ps
+-top
+-ucli
+/home/kumon/Synopsys/vcs/T-2022.06/linux64/bin/vcs1
+./vcs.log
+simv
+/home/kumon/Synopsys/verdi/T-2022.06/share/PLI/VCS/LINUX64/novas.tab
+Tb_Sync_FIFO
+/home/kumon/Synopsys/verdi/T-2022.06/share/PLI/VCS/LINUX64/verdi.tab
+/home/icer/Project/ASICs/virtual_project/sync_fifo_flow/user/sim/file_list/asic_fun_sim.f
+61
+XDG_DATA_DIRS=/root/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share
+VMR_MODE_FLAG=64
+VERDI_HOME=/home/kumon/Synopsys/verdi/T-2022.06
+VC_STATIC_HOME=/home/kumon/Synopsys/vc_static/T-2022.06-SP2
+VCS_PATHMAP_PRELOAD_DONE=1
+VCS_MX_HOME_INTERNAL=1
+VCS_MODE_FLAG=64
+VCS_LOG_FILE=./vcs.log
+VCS_HOME=/home/kumon/Synopsys/vcs/T-2022.06
+VCS_EXEC_DONE=1
+VCS_DEPTH=0
+VCS_ARG_ADDED_FOR_TMP=1
+VCS_ARCH_OVERRIDE=linux
+VCS_ARCH=linux64
+UNAME=/bin/uname
+TOOL_HOME=/home/kumon/Synopsys/vcs/T-2022.06/linux64
+TMAX_HOME=/home/kumon/Synopsys/txs/R-2020.09-SP4
+SYNOPSYS_TMAX=/home/kumon/Synopsys/txs/R-2020.09-SP4
+SYNOPSYS_LC_ROOT=/home/kumon/Synopsys/lc/R-2020.09-SP3
+SYNOPSYS_HOME=/home/kumon/Synopsys/syn/R-2020.09-SP4
+STARRC_HOME=/home/kumon/Synopsys/starrc/O-2018.06-SP1
+SPYGLASS_HOME=/home/kumon/Synopsys/spyglass/T-2022.06-1/SPYGLASS_HOME
+SNPS_VCS_CLANG_PATH=/home/kumon/Synopsys/vcs/T-2022.06/linux64/clang
+SNPS_INTERNAL_VCS_LINUX_OS=linux
+SNPSLMD_QUEUE=1
+SCRNAME=vcs
+SCRIPT_NAME=vcs
+SCL_HOME=/home/kumon/Synopsys/scl/2024.06
+RTLA_HOME=/home/kumon/Synopsys/rtla/U-2022.12-SP1
+QT_PLUGIN_PATH=/usr/lib64/kde4/plugins:/usr/lib/kde4/plugins
+QT_GRAPHICSSYSTEM_CHECKED=1
+QTLIB=/usr/lib64/qt-3.3/lib
+QTINC=/usr/lib64/qt-3.3/include
+QTDIR=/usr/lib64/qt-3.3
+PT_HOME=/home/kumon/Synopsys/prime/U-2022.12
+PKG_CONFIG_PATH=/opt/rh/devtoolset-11/root/usr/lib64/pkgconfig
+PERL_MM_OPT=INSTALL_BASE=/root/perl5
+PERL_MB_OPT=--install_base /root/perl5
+PERL_LOCAL_LIB_ROOT=:/root/perl5
+PERL5LIB=/root/perl5/lib/perl5:
+PCP_DIR=/opt/rh/devtoolset-11/root
+OVA_UUM=0
+MFLAGS=
+MC2_HOME_DEFAULT=/home/kumon/TSMC/MC2/MC2_2012.02.00.d
+MC2_HOME_2012_02_00=/home/kumon/TSMC/MC2/MC2_2012.02.00.d
+MC2_HOME_2010_04_00=/home/kumon/TSMC/MC2/MC2_2010.04.00.b
+MC2_HOME_2007_11_00=/home/kumon/TSMC/MC2/MC2_2007.11.00
+MAKE_TERMOUT=/dev/pts/5
+MAKE_TERMERR=/dev/pts/5
+MAKELEVEL=1
+MAKEFLAGS=
+LESSOPEN=||/usr/bin/lesspipe.sh %s
+LC_HOME=/home/kumon/Synopsys/lc/R-2020.09-SP3
+LC_ALL=C
+KDEDIRS=/usr
+ICV_HOME=/home/kumon/Synopsys/icvalidator/O-2018.12-SP2-10
+ICC2_HOME=/home/kumon/Synopsys/icc2/T-2022.03
+FUSIONCOMPILER_HOME=/home/kumon/Synopsys/fusioncompiler/O-2018.06-SP4
+EMBEDIT_HOME=/home/kumon/Synopsys/embedit/Q-2020.03-SP1
+DVE_HOME=/home/kumon/Synopsys/vcs/T-2022.06
+DC_HOME=/home/kumon/Synopsys/syn/R-2020.09-SP4
+0
+0
+7
+1732622616 /home/icer/Project/ASICs/virtual_project/sync_fifo_flow/user/src/tem5n28hpcplvta64x20m4swbso_110a_tt0p9v25c.v
+1732624198 /home/icer/Project/ASICs/virtual_project/sync_fifo_flow/user/src/Sync_FIFO.sv
+1732793666 /home/icer/Project/ASICs/virtual_project/sync_fifo_flow/user/sim/Tb_Sync_FIFO.sv
+1732624715 /home/icer/Project/ASICs/virtual_project/sync_fifo_flow/user/sim/file_list/asic_fun_sim.f
+1653825972 /home/kumon/Synopsys/verdi/T-2022.06/share/PLI/VCS/LINUX64/verdi.tab
+1653825972 /home/kumon/Synopsys/verdi/T-2022.06/share/PLI/VCS/LINUX64/novas.tab
+1654052745 /home/kumon/Synopsys/vcs/T-2022.06/linux64/lib/vcsdp_lite.tab
+5
+1654054205 /home/kumon/Synopsys/vcs/T-2022.06/linux64/lib/libvirsim.so
+1654053585 /home/kumon/Synopsys/vcs/T-2022.06/linux64/lib/liberrorinf.so
+1654053489 /home/kumon/Synopsys/vcs/T-2022.06/linux64/lib/libsnpsmalloc.so
+1654053565 /home/kumon/Synopsys/vcs/T-2022.06/linux64/lib/libvfs.so
+1653824934 /home/kumon/Synopsys/verdi/T-2022.06/share/PLI/VCS/LINUX64/pli.a
+1732793680 simv.daidir
+-1 partitionlib

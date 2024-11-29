@@ -102,7 +102,9 @@ function parseTimescale(timescale) {
 }
 
 /**
- * 
+ * @param {{
+ *   wasmBinary: any
+ * }} moduleArg 
  * @returns {{
  *  write: (piece: Uint8Array) => void
  *  consume: (arraybuffer: ArrayBuffer, config?: consumeConfig) => void
@@ -118,23 +120,27 @@ async function makeVcdStream(moduleArg) {
     vcdstream.change.any((id, time, cmd, value, mask) => {
         const time53 = Number(time);
         vcdBasicInfo.tgcd = gcd(vcdBasicInfo.tgcd, time53);
-        vcdBasicInfo.signalValues[id] = vcdBasicInfo.signalValues[id] || { kind: '', wave: [] };
-
-        // if (id === 'x#') {
-        //     console.log(id, time, cmd, value, mask);
-        //     console.log(time > MAX_SAFE_INTEGER);
-        // }
+        const values = vcdBasicInfo.signalValues[id] || { kind: '', wave: [] };
+        vcdBasicInfo.signalValues[id] = values;
 
         if (cmd >= 14 && cmd <= 28) {
-            vcdBasicInfo.signalValues[id].kind = 'bit';
-            vcdBasicInfo.signalValues[id].wave.push([time53, cmd - 14]);
+            values.kind = 'bit';            
+            values.wave.push([time53, cmd - 14]);
+            // if (values.wave.length >= 2) {
+            //     const first = values.wave.at(-2)[0];
+            //     const second = values.wave.at(-1)[0];
+            //     if (first > second) {
+            //         console.log(first, second);
+            //     }
+            // }
+
         } else {
-            vcdBasicInfo.signalValues[id].kind = 'vec';
+            values.kind = 'vec';
             const point = [time53, numberOrString(value)];
             if (mask !== 0n) {
                 point.push(numberOrString(mask));
             }
-            vcdBasicInfo.signalValues[id].wave.push(point);
+            values.wave.push(point);
         }
     });
 
